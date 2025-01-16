@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v0.1.2 (2025-01-16)
+
+### Bug Fixes
+
+- Adding method to compute moments and returns correlation
+  ([`ffd3a84`](https://github.com/Paulou74/pypricingchain/commit/ffd3a84d0ee76b19e41afce2e81ed481695d04c3))
+
+
 ## v0.1.1 (2025-01-16)
 
 ### Bug Fixes
