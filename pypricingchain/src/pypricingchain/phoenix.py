@@ -1,5 +1,9 @@
 import numpy as np
 
+
+import logging
+logging.basicConfig(level=logging.INFO)
+
 # --------------------------------------------------------------------------
 #  Class
 # --------------------------------------------------------------------------
@@ -50,7 +54,7 @@ class Phoenix:
             :phoenix Phoenix: Phoenix product
 
         """
-
+        logging.info("Creating your product ...")
         # Check the validity of the inputs
         if len(underlying) != 2:
             raise ValueError("The underlying must consist of 2 underlyings.")
@@ -99,3 +103,4 @@ class Phoenix:
         arr_coupon = np.ones(self.n_obs) * self.coupon_barrier
         self.arr_autocall_barriers = arr_autocall
         self.arr_coupon_barriers = arr_coupon
+        logging.info("Product successfully created!")
