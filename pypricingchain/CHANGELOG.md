@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v0.2.3 (2025-01-16)
+
+### Bug Fixes
+
+- Chaging the drift computation + Pricing functions return simulations
+  ([`3d14a5d`](https://github.com/Paulou74/pypricingchain/commit/3d14a5d47f028708dc8e8ce55a4962e202bbd231))
+
+
 ## v0.2.2 (2025-01-16)
 
 ### Bug Fixes
