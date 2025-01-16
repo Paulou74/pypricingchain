@@ -1,6 +1,19 @@
 # CHANGELOG
 
 
+## v0.2.0 (2025-01-16)
+
+### Bug Fixes
+
+- Created the simulations for basket decrement
+  ([`8e9010e`](https://github.com/Paulou74/pypricingchain/commit/8e9010e734fe6733b3686374284cd10b04bfca60))
+
+### Features
+
+- Pricer blackscholes dynamics ready
+  ([`59e71c7`](https://github.com/Paulou74/pypricingchain/commit/59e71c7926caf1a3ec7ff6a3a2b9af16333a5321))
+
+
 ## v0.1.3 (2025-01-16)
 
 ### Bug Fixes
