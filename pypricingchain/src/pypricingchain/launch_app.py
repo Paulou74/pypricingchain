@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
 
 from pypricingchain.pricer import Pricer
 from pypricingchain.phoenix import Phoenix
@@ -29,7 +30,14 @@ def launch_app():
         st.session_state.layout = "centered"
 
         st.subheader("Structure details")
-        n_sim = st.number_input("Enter the number of simulations for the pricing", value=15000, min_value=10000, step=5000)
+        
+        colSim, colRf = st.columns(2)
+
+        with colSim:
+            n_sim = st.number_input("Enter the number of simulations for the pricing", value=15000, min_value=10000, step=5000)
+
+        with colRf:
+             disc_rate = st.number_input("Discount rate for the pricing", value=0.04, min_value=0.0, step=0.01)
 
         # General paramaters
         st.markdown('----')
@@ -44,7 +52,7 @@ def launch_app():
             df_underlyings = st.data_editor(pd.DataFrame(index=["Component 1", "Component 2"], columns=["Ticker", "Risk Free Rate", "Div Yield", "Vol"]))
             correl = st.number_input("Correlation between assets", -1.0, 1.0, 0.7, 0.01)
             from_market = st.toggle("Price using market data")
-            st.caption("IMPORTANT: You still have to input dividend yields")
+            st.caption("IMPORTANT: You still have to input dividend yields and risk free rates")
 
         with colCoupon:
             coupon = st.number_input("Coupon per period", value=0.05, min_value=0.0, step=0.01)
@@ -88,18 +96,25 @@ def launch_app():
             st.caption("5% per year = 5")
 
         with colPoint:
-            decrement_point = st.toggle("Point decrement mechanism")
+            decrement_point = st.toggle("Point decrement")
 
         with colPerc:
             decrement_percentage = st.toggle("Percentage decrement")
 
+
+
+
+
+
+
         # Price
         if st.button("Price"):
+            
+            st.markdown('----')
 
             # Retrieve pricing parameters input
-            arr_divs = df_underlyings["Div Yield"].values
-            arr_rf = df_underlyings["Risk Free Rate"].values
-            arr_vol = df_underlyings["Vol"]
+            arr_divs = df_underlyings["Div Yield"].astype(float).values
+            arr_rf = df_underlyings["Risk Free Rate"].astype(float).values
 
             # Initialise the product
             phoenix = Phoenix(
@@ -120,8 +135,23 @@ def launch_app():
             pricer = Pricer(n_sim, phoenix)
             
             if from_market:
-                price, mat_underlying = pricer.price_from_market_data()
+                price, mat_underlying = pricer.price_from_market_data(arr_divs, arr_rf, disc_rate)
 
+            else:
+                arr_vol = df_underlyings["Vol"].astype(float).values
+                price, mat_underlying = pricer.price_from_inputs(arr_divs, arr_rf, arr_vol, correl, disc_rate)
+
+            
+            # Prepare for an illustration of the trajectories
+            fig, ax = plt.subplots(figsize=(10, 5))
+            ax.plot(mat_underlying, linewidth=0.7)
+            ax.set_xlabel("Time")
+            ax.set_ylabel("Underlying Level")
+
+            st.success(f"Price: {np.round(price*100, 2)}%")
+
+            st.text("Simulated brownians used for the pricing")
+            st.pyplot(fig)
 
 
 
@@ -200,7 +230,7 @@ def launch_app():
                 st.caption("5% per year = 5")
 
             with colPoint:
-                decrement_point1 = st.toggle("Point decrement mechanism")
+                decrement_point1 = st.toggle("Point decrement")
 
             with colPerc:
                 decrement_percentage1 = st.toggle("Percentage decrement")
