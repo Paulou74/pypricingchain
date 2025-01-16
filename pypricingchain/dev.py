@@ -1,7 +1,10 @@
+import numpy as np
 import datetime
+import matplotlib.pyplot as plt
 from datetime import datetime as dt
 from datetime import timedelta
 from pypricingchain.phoenix import Phoenix, Metrics
+from pypricingchain.pricer import Pricer
 from pybacktestchain.data_module import DataModule, FirstTwoMoments, Information, get_stocks_data
 
 dict_params = {
@@ -19,26 +22,11 @@ dict_params = {
 }
 
 my_phoenix = Phoenix(**dict_params)
-print(my_phoenix.underlying)
-
+pricer = Pricer(1000, my_phoenix)
+mat_spots = pricer.generate_brownians([0.05, 0.05], [0.2, 0.2], 0.5)
 window=360
 met = my_phoenix.compute_components_moments(window)
-# print((dt.today() - timedelta(days=360)).strftime("%Y-%m-%d"))
-# df_prices = get_stocks_data(my_phoenix.underlying, (dt.today() - timedelta(days=window)).strftime("%Y-%m-%d"), dt.today().strftime("%Y-%m-%d"))
-# info_set = Information(
-#     s = timedelta(days=window),
-#     data_module=DataModule(df_prices),
-#     time_column="Date",
-#     company_column="ticker",
-#     adj_close_column="Adj Close"
-# )
-
-# met = Metrics(
-#     s = timedelta(days=window),
-#     data_module=DataModule(df_prices),
-#     time_column="Date",
-#     company_column="ticker",
-#     adj_close_column="Adj Close"
-# ).compute_information(dt.today())
-
 print(met)
+
+plt.plot(mat_spots[:,:, 1])
+plt.show()

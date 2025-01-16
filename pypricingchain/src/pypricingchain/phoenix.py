@@ -37,13 +37,16 @@ class Metrics(Information):
 
         # Compute the returns
         data = self.slice_data(t)
-        data["Return"] = data.groupby(self.company_column)[self.adj_close_column].pct_change()
+        data = data.copy()
+        data.loc[:, "Return"] = data.groupby(self.company_column)[self.adj_close_column].pct_change()
 
         # Compute the mean return
-        dict_metrics["Ann. Return"] = data.groupby(self.company_column)['Return'].mean() * 252
+        df_ret = data.groupby(self.company_column)['Return'].mean() * 252
+        dict_metrics["Ann. Return"] = df_ret
 
         # Compute the historical volatility
-        dict_metrics["Ann. Volatility"] = data.groupby(self.company_column)['Return'].std() * np.sqrt(252)
+        df_vol = data.groupby(self.company_column)['Return'].std() * np.sqrt(252)
+        dict_metrics["Ann. Volatility"] = df_vol
 
         # Compute the correlation
         correlation = data.pivot(index=self.time_column, columns=self.company_column, values='Return').corr()
