@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v0.1.0 (2025-01-16)
+
+### Features
+
+- Created Pricer and Phoenix classes + Initialisation of Phoenix
+  ([`8bbda21`](https://github.com/Paulou74/pypricingchain/commit/8bbda2166d6aca28dd841c2a3036901cd44b638d))
+
+
 ## v0.0.2 (2025-01-16)
 
 ### Bug Fixes
