@@ -216,3 +216,37 @@ class Pricer:
         arr_price = mat_flow.sum(axis=0)
 
         return arr_price.mean()
+    
+    
+    def price_from_market_data(self, arr_divs : np.ndarray, rf : float):
+
+        """
+        Method to price using market data metrics as pricing input. To be used for illiquid assets where no forward data is available.
+
+        Args:
+
+            :arr_divs np.ndarray: Array containing the dividend yields of the underlings.
+            :rf float: Risk free rate.
+
+        Returns:
+
+            :price float: Price of the structure.
+
+        """
+
+        # Retrieve estimators of the volatilies and correlation using past data
+        dict_metrics = self.phoenix.compute_components_moments(360)
+        sigma_asset_1 = dict_metrics["Ann. Volatility"].loc[self.phoenix.underlying[0]]
+        sigma_asset_2 = dict_metrics["Ann. Volatility"].loc[self.phoenix.underlying[1]]
+        correl = dict_metrics["Ann. Correlation"].iloc[1, 0]
+
+        # Simulate the assets path using this data
+        arr_drifts = rf - arr_divs 
+        arr_diffusions = np.array([sigma_asset_1, sigma_asset_2])
+        mat_spots = self.generate_brownians(arr_drifts, arr_diffusions, correl)
+        mat_underlying = self.simulate_underlying_path(mat_spots)
+
+        # Price
+        price = self.price_phoenix(mat_underlying, rf)
+
+        return price

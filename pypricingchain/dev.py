@@ -16,17 +16,21 @@ dict_params = {
     "coupon_barrier": 0.8,
     "put_strike": 1.0,
     "put_barrier": 0.7,
-    "decrement": 0.05,
-    "decrement_point": False,
-    "decrement_percentage": True
+    "decrement": 50,
+    "decrement_point": True,
+    "decrement_percentage": False
 }
 
 my_phoenix = Phoenix(**dict_params)
-pricer = Pricer(1000, my_phoenix)
-# window=360
-# met = my_phoenix.compute_components_moments(window)
-
-mat_spots = pricer.generate_brownians([0.05, 0.05], [0.2, 0.2], 0.5)
-mat_undl = pricer.simulate_underlying_path(mat_spots)
-price = pricer.price_phoenix(mat_undl, 0.03)
+pricer = Pricer(25000, my_phoenix)
+window=360
+price = pricer.price_from_market_data(np.array([0.02, 0.03]), 0.03)
 print(price)
+# met = my_phoenix.compute_components_moments(window)
+# print(met)
+# print(met["Ann. Volatility"].loc["AAPL"])
+
+# mat_spots = pricer.generate_brownians([0.05, 0.05], [0.2, 0.2], 0.5)
+# mat_undl = pricer.simulate_underlying_path(mat_spots)
+# price = pricer.price_phoenix(mat_undl, 0.03)
+# print(price)
