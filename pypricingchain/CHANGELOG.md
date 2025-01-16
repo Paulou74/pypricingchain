@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v0.2.8 (2025-01-16)
+
+### Bug Fixes
+
+- Creating documentation
+  ([`bb6a55b`](https://github.com/Paulou74/pypricingchain/commit/bb6a55be7340856a5b8961f7c673d84ffdf86bf5))
+
+
 ## v0.2.7 (2025-01-16)
 
 ### Bug Fixes
