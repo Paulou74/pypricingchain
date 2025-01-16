@@ -90,7 +90,7 @@ class Phoenix:
             
             :underlying list: List of underlyings.
             :maturity int: Maturity of the product.
-            :obs_freq str: Observation frequency.
+            :obs_per_year int: Number of observations per year.
             :autocall_barrier float: Value of the autocall barrier.
             :coupon_barrier float: Value of the coupon barrier.
             :put_strike float: Value of the strike of the put at maturity.
@@ -104,7 +104,7 @@ class Phoenix:
             :phoenix Phoenix: Phoenix product
 
         """
-        
+
         logging.info("Creating your product ...")
         # Check the validity of the inputs
         if len(underlying) != 2:
