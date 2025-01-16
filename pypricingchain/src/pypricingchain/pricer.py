@@ -84,9 +84,62 @@ class Pricer:
 
         return mat_spots
     
+    
     def simulate_underlying_path(self, mat_spots : np.ndarray):
 
         """
-        Method that simulates the underlying path depending on the applied decrement
-        
+        Method that simulates the underlying path depending on the applied decrement.
+
+        Args:
+
+            :mat_spots np.ndarray: Matrix containing the simulated spots trajectories
+
+        Returns:
+
+            :mat_underlying np.ndarray: 2-dimensional array containing the simulated paths of the underlying 
+
         """
+
+        # Generating the matrix of simulated paths
+        n_steps = self.phoenix.maturity * 360
+        mat_underlying = np.zeros((n_steps + 1, self.n_sim))
+        mat_underlying[0, :] = 1000
+
+        # Compute the returns of the components
+        mat_ret_compo = np.diff(mat_spots, axis=0) / mat_spots[:-1, :, :]
+        
+        # If a decrement needs to be applied
+        if self.phoenix.decrement != 0 and (self.phoenix.decrement_percentage or self.phoenix.decrement_point):
+            
+            # Applying decrement in percentage
+            if self.phoenix.decrement_percentage:
+
+                for t in range(n_steps):
+                    
+                    # Compute the average return of both assets
+                    arr_ret = 0.5 * mat_ret_compo[t, :, 0] + 0.5 * mat_ret_compo[t, :, 1]
+                    mat_underlying[t + 1, :] = mat_underlying[t, :] * (1 + arr_ret - self.phoenix.decrement / 360)
+
+            # Applying decrement in points
+            if self.phoenix.decrement_point:
+
+                for t in range(n_steps):
+
+                    # Compute the average return of both assets
+                    arr_ret = 0.5 * mat_ret_compo[t, :, 0] + 0.5 * mat_ret_compo[t, :, 1]
+                    mat_underlying[t + 1, :] = mat_underlying[t, :] * (1 + arr_ret) - self.phoenix.decrement / 360
+        else:
+
+            # Case no decrement need to be applied
+            for t in range(n_steps):
+                    
+                # Compute the average return of both assets
+                arr_ret = 0.5 * mat_ret_compo[t, :, 0] + 0.5 * mat_ret_compo[t, :, 1]
+                mat_underlying[t + 1, :] = mat_underlying[t, :] * (1 + arr_ret)
+
+
+        return mat_underlying
+
+
+
+
