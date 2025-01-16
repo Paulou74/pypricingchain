@@ -13,7 +13,8 @@ class Phoenix:
     # Class attributes
     underlying : list
     maturity : int
-    obs_per_year : str
+    coupon : float
+    obs_per_year : int
     autocall_barrier : float
     coupon_barrier : float
     put_strike : float
@@ -29,7 +30,7 @@ class Phoenix:
     
 
     # Default constructor
-    def __init__(self, underlying : list, maturity : int, obs_freq : int, autocall_barrier : float, 
+    def __init__(self, underlying : list, maturity : int, coupon : float, obs_per_year : int, autocall_barrier : float, 
                  coupon_barrier : float, put_strike : float, put_barrier : float,
                  decrement : float, decrement_point : bool, decrement_percentage : bool):
         
@@ -64,7 +65,10 @@ class Phoenix:
         if maturity <= 0:
             raise ValueError("Maturity cannot be negative!")
         
-        if obs_freq not in [12, 4, 2, 1]:
+        if coupon < 0:
+            raise ValueError("The coupon value cannot be negative!")
+        
+        if obs_per_year not in [12, 4, 2, 1]:
             raise ValueError("Number of observations not supported: only enter 12 (monthly), 4 (quarterly), 2 (semi-annually), 1 (annually) observations.")
         
         if autocall_barrier < 0:
@@ -88,7 +92,8 @@ class Phoenix:
         # If all the inputs are valid, set the inputs to the class variables
         self.underlying = underlying
         self.maturity = maturity
-        self.obs_per_year = obs_freq
+        self.coupon = coupon
+        self.obs_per_year = obs_per_year
         self.autocall_barrier = autocall_barrier
         self.coupon_barrier = coupon_barrier
         self.put_strike = put_strike
