@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v0.2.6 (2025-01-16)
+
+### Bug Fixes
+
+- Adding dependencies
+  ([`277ca90`](https://github.com/Paulou74/pypricingchain/commit/277ca905f17341d9d32040b3e4157f75e13fdbd8))
+
+
 ## v0.2.5 (2025-01-16)
 
 ### Bug Fixes
