@@ -1,6 +1,17 @@
 # CHANGELOG
 
 
+## v0.1.1 (2025-01-16)
+
+### Bug Fixes
+
+- Default constructor in the Pricer class + logging
+  ([`1e96960`](https://github.com/Paulou74/pypricingchain/commit/1e9696013b939d872294d05fceb5a05918bbaa10))
+
+- Fixing phoenix initialisation
+  ([`d37275e`](https://github.com/Paulou74/pypricingchain/commit/d37275eb23887e93312ba2deacf742da88c9b150))
+
+
 ## v0.1.0 (2025-01-16)
 
 ### Features
