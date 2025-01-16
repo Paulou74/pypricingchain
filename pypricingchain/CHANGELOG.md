@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v0.2.1 (2025-01-16)
+
+### Bug Fixes
+
+- Added pricing from market data
+  ([`0f113fb`](https://github.com/Paulou74/pypricingchain/commit/0f113fbdd633ea8b32274709ccb341ed57ec1b69))
+
+
 ## v0.2.0 (2025-01-16)
 
 ### Bug Fixes
