@@ -1,4 +1,11 @@
 import numpy as np
+import pandas as pd
+import datetime
+from datetime import datetime as dt
+from datetime import timedelta
+from dataclasses import dataclass
+
+from pybacktestchain.data_module import DataModule, Information, get_stocks_data
 
 
 import logging
@@ -8,6 +15,45 @@ logging.basicConfig(level=logging.INFO)
 #  Class
 # --------------------------------------------------------------------------
 
+@dataclass
+class Metrics(Information):
+
+    def compute_information(self, t : datetime):
+
+        '''
+        Method to compute the metrics related to an information class
+
+        Args:
+
+            :t datetime: Time window over which we wanto to compute the information
+        
+        Returns:
+
+            :dict_metrics dict: Dictionary with the metrics.
+        '''
+
+        # Output dictionary
+        dict_metrics = {}
+
+        # Compute the returns
+        data = self.slice_data(t)
+        data["Return"] = data.groupby(self.company_column)[self.adj_close_column].pct_change()
+
+        # Compute the mean return
+        dict_metrics["Ann. Return"] = data.groupby(self.company_column)['Return'].mean() * 252
+
+        # Compute the historical volatility
+        dict_metrics["Ann. Volatility"] = data.groupby(self.company_column)['Return'].std() * np.sqrt(252)
+
+        # Compute the correlation
+        correlation = data.pivot(index=self.time_column, columns=self.company_column, values='Return').corr()
+        dict_metrics["Ann. Correlation"] = correlation
+
+        return dict_metrics
+
+
+
+        
 class Phoenix:
 
     # Class attributes
@@ -109,3 +155,33 @@ class Phoenix:
         self.arr_autocall_barriers = arr_autocall
         self.arr_coupon_barriers = arr_coupon
         logging.info("Product successfully created!")
+
+
+    def compute_components_moments(self, window : int):
+
+        """
+        Method that allows to compute the moments and correlation between the return of the components.
+
+        Args:
+
+            :window int: Window over which we compute the annualised metrics.
+
+        Returns
+
+            :df_metrics pd.DataFrame: DataFrame with the various metrics describing the relation between the two assets.
+
+        """
+
+        # Use pybacktestchain functionalities to retrieve the data
+        df_prices = get_stocks_data(self.underlying, (dt.today() - timedelta(days=window)).strftime("%Y-%m-%d"), dt.today().strftime("%Y-%m-%d"))
+        metrics_computor = Metrics(
+            s = timedelta(days=window),
+            data_module=DataModule(data=df_prices),
+            time_column="Date",
+            company_column="ticker",
+            adj_close_column="Adj Close"
+        )
+        # metrics_computor = Metrics(info_set)
+        dict_metrics = metrics_computor.compute_information(dt.today())
+
+        return dict_metrics
