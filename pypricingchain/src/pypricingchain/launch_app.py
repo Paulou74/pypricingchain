@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import numpy as np
 
 from pypricingchain.pricer import Pricer
 from pypricingchain.phoenix import Phoenix
@@ -95,6 +96,11 @@ def launch_app():
         # Price
         if st.button("Price"):
 
+            # Retrieve pricing parameters input
+            arr_divs = df_underlyings["Div Yield"].values
+            arr_rf = df_underlyings["Risk Free Rate"].values
+            arr_vol = df_underlyings["Vol"]
+
             # Initialise the product
             phoenix = Phoenix(
                 underlying = list(df_underlyings["Ticker"].values),
@@ -112,6 +118,10 @@ def launch_app():
 
             # Instantiate the pricer
             pricer = Pricer(n_sim, phoenix)
+            
+            if from_market:
+                price, mat_underlying = pricer.price_from_market_data()
+
 
 
 

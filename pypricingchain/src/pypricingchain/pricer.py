@@ -249,4 +249,4 @@ class Pricer:
         # Price
         price = self.price_phoenix(mat_underlying, rf)
 
-        return price
+        return price, mat_underlying
