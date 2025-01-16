@@ -1,6 +1,17 @@
 # CHANGELOG
 
 
+## v0.2.2 (2025-01-16)
+
+### Bug Fixes
+
+- More on streamlit
+  ([`2ddba7d`](https://github.com/Paulou74/pypricingchain/commit/2ddba7dfee8a5ee3b4d436db551a5ba17829df9f))
+
+- Started working on the userform
+  ([`2409657`](https://github.com/Paulou74/pypricingchain/commit/2409657d1b3704029281eaba94bb7eeecfe71ea7))
+
+
 ## v0.2.1 (2025-01-16)
 
 ### Bug Fixes
