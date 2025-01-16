@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v0.2.7 (2025-01-16)
+
+### Bug Fixes
+
+- Adding tests
+  ([`95b9714`](https://github.com/Paulou74/pypricingchain/commit/95b971467e1553a5b8c38284f8e2aa749c8e4a37))
+
+
 ## v0.2.6 (2025-01-16)
 
 ### Bug Fixes
