@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v0.1.3 (2025-01-16)
+
+### Bug Fixes
+
+- Adding a method to generate correlated brownian motions
+  ([`425c8af`](https://github.com/Paulou74/pypricingchain/commit/425c8afb4b973ecf08a6fd83fcae4fd6683c5769))
+
+
 ## v0.1.2 (2025-01-16)
 
 ### Bug Fixes
