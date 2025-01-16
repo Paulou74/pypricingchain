@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v0.2.10 (2025-01-17)
+
+### Bug Fixes
+
+- Adding caption to specify input type in pricing parameters table in streamlit
+  ([`76f7298`](https://github.com/Paulou74/pypricingchain/commit/76f7298e954d7c5777e494d8d5352966b227ac69))
+
+
 ## v0.2.9 (2025-01-17)
 
 ### Bug Fixes
