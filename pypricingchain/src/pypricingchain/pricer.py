@@ -139,7 +139,80 @@ class Pricer:
 
 
         return mat_underlying
+    
+
+    def price_phoenix(self, mat_underlying : np.ndarray, rf : float):
+        
+        """
+        Method to price the Phoenix.
+
+        Args:
+
+            :mat_underlying np.ndarray: Matrix containing the simulated paths.
+            :rf float: Risk free rate used for the discount
+
+        Returns:
+
+            :price float: Price of the structure
+
+        """
+
+        # Retrieve the data from the product for improved-readibility
+        coupon = self.phoenix.coupon
+        obs_per_year = self.phoenix.obs_per_year
+        arr_autocall_barriers = self.phoenix.arr_autocall_barriers
+        arr_coupon_barriers = self.phoenix.arr_coupon_barriers
+        put_strike = self.phoenix.put_strike
+        put_barrier = self.phoenix.put_barrier
+        n_obs = self.phoenix.n_obs
+        mat_flow = np.zeros((n_obs, self.n_sim))
+
+        # Write the underlying in terms of performance
+        mat_underlying = mat_underlying / mat_underlying[0, :]
+        # Defined the discount factor
+        time_step = int(360 / obs_per_year)
+        arr_discount = [np.exp(-rf * (1 + i) * time_step / 360) for i in range(n_obs)]
+
+        # Iterate over the observations periods
+        arr_has_autocalled = np.ones(self.n_sim)
+        for i in range(1, n_obs):
+
+            # Scenario at maturity
+            if i == n_obs:
+
+                # Determine if the Coupon condition has been met
+                arr_coupon = np.where(arr_obs > arr_coupon_barriers[i-1])[0]
+
+                # Put condition
+                arr_put = np.where(arr_obs < put_barrier)[0]
+                put_payoff = np.maximum(put_strike - arr_obs[arr_put], 0)
+                mat_flow[i-1, [arr_put]] = put_payoff * (arr_has_autocalled[arr_put] - 1)
+
+                # Update cash flow matrix
+                mat_flow[i-1, :] += 1
+                mat_flow[i-1, [arr_coupon]] += coupon
+                mat_flow[i-1, [arr_put]] = put_payoff * (arr_has_autocalled[arr_put] - 1)
+
+            # Determine Autocall condition first
+            idx = i * time_step
+            arr_obs = mat_underlying[idx, :]
+            arr_autocall = np.where(arr_obs > arr_autocall_barriers[i-1])[0]
+            
+            # Determine if the Coupon condition has been met
+            arr_coupon = np.where(arr_obs > arr_coupon_barriers[i-1])[0]
+
+            # Update the products cashflows accordingly
+            mat_flow[i-1, [arr_coupon]] += coupon * arr_has_autocalled[arr_coupon]
+            mat_flow[i-1, [arr_autocall]] += 1 * arr_has_autocalled[arr_autocall]
+
+            # Discount the cashflows
+            mat_flow[i-1, :] *= arr_discount[i-1]
+
+            # Update the autocall condition 
+            arr_has_autocalled[arr_autocall] = np.minimum(arr_has_autocalled[arr_autocall], 0)
 
 
+        # Take the average value and return the price
+        arr_price = mat_flow.sum(axis=0)
 
-
+        return arr_price.mean()

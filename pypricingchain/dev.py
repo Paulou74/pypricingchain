@@ -10,7 +10,7 @@ from pybacktestchain.data_module import DataModule, FirstTwoMoments, Information
 dict_params = {
     "underlying" : ["AAPL", "MSFT"],
     "maturity": 10,
-    "coupon": 0.05,
+    "coupon": 0.05/12,
     "obs_per_year": 12,
     "autocall_barrier": 1.0,
     "coupon_barrier": 0.8,
@@ -23,17 +23,10 @@ dict_params = {
 
 my_phoenix = Phoenix(**dict_params)
 pricer = Pricer(1000, my_phoenix)
+# window=360
+# met = my_phoenix.compute_components_moments(window)
+
 mat_spots = pricer.generate_brownians([0.05, 0.05], [0.2, 0.2], 0.5)
 mat_undl = pricer.simulate_underlying_path(mat_spots)
-window=360
-met = my_phoenix.compute_components_moments(window)
-print(met)
-
-mat_diff = np.diff(mat_spots, axis=0) / mat_spots[:-1, :, :]
-print(mat_spots[: ,2, :])
-print(mat_diff[:, 2, :])
-print(mat_spots.shape)
-print(mat_diff.shape)
-
-plt.plot(mat_undl)
-plt.show()
+price = pricer.price_phoenix(mat_undl, 0.03)
+print(price)

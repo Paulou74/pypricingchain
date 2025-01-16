@@ -104,6 +104,7 @@ class Phoenix:
             :phoenix Phoenix: Phoenix product
 
         """
+        
         logging.info("Creating your product ...")
         # Check the validity of the inputs
         if len(underlying) != 2:
