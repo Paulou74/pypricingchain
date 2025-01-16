@@ -8,10 +8,11 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.11"
-scipy = "^1.15.1"
 matplotlib = "^3.10.0"
 streamlit = "^1.41.1"
 numpy = "1.26.4"
+pybacktestchain = "^0.2.1"
+scipy = "1.13.1"
 
 
 [tool.poetry.group.dev.dependencies]
