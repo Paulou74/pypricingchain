@@ -22,11 +22,13 @@ dict_params = {
 }
 
 my_phoenix = Phoenix(**dict_params)
-pricer = Pricer(25000, my_phoenix)
+pricer = Pricer(50000, my_phoenix)
 window=360
-# price = pricer.price_from_market_data(np.array([0.02, 0.03]), np.array([0.05, 0.03]), 0.03)
-price = pricer.price_from_inputs(np.array([0.03, 0.06]), np.array([0.03, 0.03]), np.array([0.25, 0.34]), 0.05, 0.05)
+price, mat = pricer.price_from_market_data(np.array([0.02, 0.03]), np.array([0.05, 0.03]), 0.03)
+# price, mat = pricer.price_from_inputs(np.array([0.03, 0.06]), np.array([0.03, 0.03]), np.array([0.25, 0.34]), 0.05, 0.05)
 print(price)
+print(isinstance(price, float))
+print(mat[0, :])
 # met = my_phoenix.compute_components_moments(window)
 # print(met)
 # print(met["Ann. Volatility"].loc["AAPL"])
