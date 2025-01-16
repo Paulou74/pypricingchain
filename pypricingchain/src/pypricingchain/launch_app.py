@@ -51,6 +51,7 @@ def launch_app():
 
         with colUndl:
             df_underlyings = st.data_editor(pd.DataFrame(index=["Component 1", "Component 2"], columns=["Ticker", "Risk Free Rate", "Div Yield", "Vol"]))
+            st.caption("All inputs are in the same format: X% = 0.0X in the table!")
             correl = st.number_input("Correlation between assets", -1.0, 1.0, 0.7, 0.01)
             from_market = st.toggle("Price using market data")
             st.caption("IMPORTANT: You still have to input dividend yields and risk free rates")
@@ -199,6 +200,7 @@ def launch_app():
 
             with colUndl:
                 df_underlyings1 = st.data_editor(pd.DataFrame(index=["Component 1", "Component 2"], columns=["Ticker", "Risk Free Rate", "Div Yield", "Vol"]))
+                st.caption("All inputs are in the same format: X% = 0.0X in the table!")
                 correl1 = st.number_input("Correlation between assets", -1.0, 1.0, 0.7, 0.01)
                 from_market1 = st.toggle("Price using market data")
                 st.caption("IMPORTANT: You still have to input dividend yields and risk free rates")
@@ -285,6 +287,7 @@ def launch_app():
 
             with colUndl:
                 df_underlyings2 = st.data_editor(pd.DataFrame(index=["Component 1", "Component 2"], columns=["Ticker", "Risk Free Rate", "Div Yield", "Vol"]), key="Undl2")
+                st.caption("All inputs are in the same format: X% = 0.0X in the table!")
                 correl2 = st.number_input("Correlation between assets", -1.0, 1.0, 0.7, 0.01, key="correl2")
                 from_market2 = st.toggle("Price using market data", key="mkt2")
                 st.caption("IMPORTANT: You still have to input dividend yields and risk free rates")
