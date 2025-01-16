@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pypricingchain"
-version = "0.2.8"
+version = "0.2.9"
 description = "Pybacktestchain was cool, but it was missing a pricing feature ..."
 authors = ["Louis Schiele"]
 license = "MIT"

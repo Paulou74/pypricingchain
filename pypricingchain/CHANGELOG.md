@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v0.2.9 (2025-01-17)
+
+### Bug Fixes
+
+- Updating dependencies to make sure no conflict during installation
+  ([`e148cfd`](https://github.com/Paulou74/pypricingchain/commit/e148cfde089e10c588f9a5fd61648f5872ecbf71))
+
+
 ## v0.2.8 (2025-01-16)
 
 ### Bug Fixes
