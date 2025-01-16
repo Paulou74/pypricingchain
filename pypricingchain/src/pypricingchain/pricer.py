@@ -217,8 +217,40 @@ class Pricer:
 
         return arr_price.mean()
     
+    def price_from_inputs(self, arr_divs : np.ndarray, arr_rf : np.ndarray, arr_vol : np.ndarray, correl : float, disc_rate : float):
+
+        """
+        Method to price using the user's inputs.
+
+        Args
+
+            :arr_divs np.ndarray: Array containing the dividend yields.
+            :arr_rf np.ndarray: Array containing the risk free rates.
+            :arr_vol np.ndarray: Arary containing the assets volatilities.
+            :correl float: Correlation between the component's returns.
+            :disc_rate float: Discount rate to be used for the pricing.
+        
+        Returns
+
+            :price float: Price of the structure.
+            :mat_underlying np.ndarray: Matrix containing the simulated paths.
+
+        """
+
+        # Simulated the paths
+        arr_drifts = arr_divs + arr_rf
+        mat_spots = self.generate_brownians(arr_drifts, arr_vol, correl)
+        mat_underlying = self.simulate_underlying_path(mat_spots)
+
+        # Price and return the outputs
+        price = self.price_phoenix(mat_underlying, disc_rate)
+
+        return price, mat_underlying
+
+
     
-    def price_from_market_data(self, arr_divs : np.ndarray, rf : float):
+    
+    def price_from_market_data(self, arr_divs : np.ndarray, arr_rf : np.ndarray, disc_rate : float):
 
         """
         Method to price using market data metrics as pricing input. To be used for illiquid assets where no forward data is available.
@@ -226,11 +258,13 @@ class Pricer:
         Args:
 
             :arr_divs np.ndarray: Array containing the dividend yields of the underlings.
-            :rf float: Risk free rate.
+            :arr_rf np.ndarray: Array containing the risk free rates associated to each asset.
+            :disc_rate float: Risk free rate used for the price discounting.
 
         Returns:
 
             :price float: Price of the structure.
+            :mat_underlying np.ndarray: Matrix containing the simulated paths.
 
         """
 
@@ -241,12 +275,12 @@ class Pricer:
         correl = dict_metrics["Ann. Correlation"].iloc[1, 0]
 
         # Simulate the assets path using this data
-        arr_drifts = rf - arr_divs 
+        arr_drifts = arr_rf - arr_divs 
         arr_diffusions = np.array([sigma_asset_1, sigma_asset_2])
         mat_spots = self.generate_brownians(arr_drifts, arr_diffusions, correl)
         mat_underlying = self.simulate_underlying_path(mat_spots)
 
         # Price
-        price = self.price_phoenix(mat_underlying, rf)
+        price = self.price_phoenix(mat_underlying, disc_rate)
 
         return price, mat_underlying
