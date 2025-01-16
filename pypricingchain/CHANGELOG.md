@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v0.2.4 (2025-01-16)
+
+### Bug Fixes
+
+- Pricing on the mono platform enabled
+  ([`8dd9d33`](https://github.com/Paulou74/pypricingchain/commit/8dd9d33ceac17c3dada55f610e5dee7c3bc062b0))
+
+
 ## v0.2.3 (2025-01-16)
 
 ### Bug Fixes
